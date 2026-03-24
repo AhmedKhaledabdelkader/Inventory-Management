@@ -1,0 +1,132 @@
+<?php
+
+namespace App\Services;
+
+use App\Http\Resources\ExternalTransferResource;
+use App\Repositories\Contracts\TransferRepositoryInterface;
+
+
+use Illuminate\Support\Facades\Http;
+
+class TransferService
+{
+
+    public $transferRepository ;
+
+    public function __construct(TransferRepositoryInterface $transferRepository,protected AuthTokenService $authTokenService) {
+        $this->transferRepository = $transferRepository;
+    }
+
+
+
+    public function fetchHoldTransfersFromWarehouse()
+    {
+        $token = $this->authTokenService->getToken();
+
+        $response = Http::withToken($token)
+            ->acceptJson()
+            ->get(config('services.external_transfer_api.base_url') . '/Transfer', [
+                '$filter' => "Status eq 'Hold' and FromWarehouse eq '99'",
+                '$expand'=>"TransferLines"
+
+            ]);
+
+        $response->throw();
+
+        return $response->json();
+    }
+
+
+      public function syncHoldTransfersFromWarehouse()
+    {
+        
+        $response = $this->fetchHoldTransfersFromWarehouse() ;
+        
+        $rows = $response['value'] ?? $response;
+
+        $externalIds = [];
+        $syncedCount = 0;
+
+        foreach ($rows as $row) {
+
+            
+            $mapped = (new ExternalTransferResource($row))->toArray(request());
+
+          
+
+            if (empty($mapped['external_id'])) {
+
+                continue;
+            }
+
+        
+
+            $this->transferRepository->upsertFromExternal($mapped);
+
+          
+
+            $externalIds[] = $mapped['external_id'];
+            $syncedCount++;
+        }
+
+        if (!empty($externalIds)) {
+            $this->transferRepository->resetMissing($externalIds);
+            $missingCount = $this->transferRepository->markMissing($externalIds);
+        } else {
+            $missingCount = 0;
+        }
+
+        return [
+            'synced_count' => $syncedCount,
+            'missing_count' => $missingCount,
+        ];
+
+    }
+    
+
+    public function getHoldTransfers(array $data)
+    {
+        return $this->transferRepository->getAllHoldTransfers($data['search']??"");
+    }
+
+    public function getPreparedTransfers(array $data)
+    {
+        return $this->transferRepository->getPreparedTransfers($data['search']??"") ;
+    }
+
+
+    public function getDroppedTransfers(array $data)
+    {
+        return $this->transferRepository->getDroppedTransfers($data['search']??"");
+    }
+
+
+ 
+    public function prepareTransfer(string $id){
+
+
+        return $this->transferRepository->markPrepared($id);
+    }
+
+     public function dropTransfer(string $id, string $reason){
+        return $this->transferRepository->markDropped($id, $reason);
+
+    }
+
+
+
+    
+     public function getSummary(): array
+    {
+        return $this->transferRepository->summary();
+     }
+
+
+     public function getDroppedTransfersSummary(): array
+{
+    return $this->transferRepository->getDroppedTransfersSummary();
+}
+
+
+
+}
