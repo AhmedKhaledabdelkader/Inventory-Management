@@ -104,14 +104,15 @@ protected function applySearch($query, ?string $search): void
         ]);
     }
 
-    public function markPrepared(string $id): bool
+    public function markPrepared(string $id,string $userId): bool
 {
     $transfer = $this->model->findOrFail($id);
 
     return $transfer->update([
         'current_action' => 'prepared',
         'drop_reason' => null,
-        'prepared_at' => now() // clear reason if previously dropped
+        'prepared_at' => now(), // clear reason if previously dropped
+        'prepared_by' => $userId,
     ]);
 }
 
@@ -124,6 +125,18 @@ public function markDropped(string $id, string $reason): bool
         'current_action' => 'dropped',
         'drop_reason' => $reason,
         'dropped_at' => now()
+    ]);
+}
+
+public function markDroppedFromQc(string $id, string $reason): bool
+{
+    $transfer = $this->model->findOrFail($id);
+
+    return $transfer->update([
+        'current_action' => 'dropped',
+        'verification_status' => 'rejected',
+        'drop_reason' => $reason,
+        'dropped_at' => now(),
     ]);
 }
 
@@ -153,5 +166,65 @@ public function getDroppedTransfersSummary(): array
         'dropped_transfers' => $droppedTransfers,
     ];
 }
+
+
+
+public function findById(string $id)
+{
+    return $this->model->find($id);
+}
+
+public function getVerificationTransfer(string $id)
+{
+    return $this->model->find($id);
+}
+
+public function markVerified(string $id, string $method, ?string $notes = null): bool
+{
+    $transfer = $this->model->findOrFail($id);
+
+    return $transfer->update([
+        'verification_status' => 'verified',
+        'verified_at' => now(),
+        'verification_method' => $method,
+        'verification_notes' => $notes,
+    ]);
+}
+
+public function markRejected(string $id, ?string $notes = null): bool
+{
+    $transfer = $this->model->findOrFail($id);
+
+    return $transfer->update([
+        'verification_status' => 'rejected',
+        'verification_notes' => $notes,
+    ]);
+}
+
+public function updateVerificationNotes(string $id, ?string $notes = null): bool
+{
+    $transfer = $this->model->findOrFail($id);
+
+    return $transfer->update([
+        'verification_notes' => $notes,
+    ]);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

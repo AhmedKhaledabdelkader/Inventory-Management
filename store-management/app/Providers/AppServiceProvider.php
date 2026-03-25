@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Repositories\Contracts\RoleRepositoryInterface;
+use App\Repositories\Contracts\TransferIssueRepositoryInterface;
 use App\Repositories\Contracts\TransferRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Eloquents\RoleRepository;
+use App\Repositories\Eloquents\TransferIssueRepository;
 use App\Repositories\Eloquents\TransferRepository;
 use App\Repositories\Eloquents\UserRepository;
 use Illuminate\Support\ServiceProvider;
@@ -36,6 +38,12 @@ $this->app->bind(
     TransferRepository::class
 );
 
+
+
+$this->app->bind(
+    TransferIssueRepositoryInterface::class,
+    TransferIssueRepository::class
+);
 
 
     }

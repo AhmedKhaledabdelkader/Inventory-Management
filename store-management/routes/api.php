@@ -14,3 +14,9 @@ Route::prefix('roles')->group(base_path('routes/apis/role.php'));
 
 
 Route::prefix('transfers')->group(base_path('routes/apis/transfer.php'));
+
+
+Route::prefix('transfers_issues')->group(base_path('routes/apis/transferIssue.php'));
+
+
+Route::prefix('notifications')->group(base_path('routes/apis/notification.php'));

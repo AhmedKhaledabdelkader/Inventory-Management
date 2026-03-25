@@ -14,8 +14,18 @@ use Illuminate\Support\Facades\Route;
 
  Route::get('/summary', [TransferController::class, 'getSummary']);
 
- Route::post('/prepare/{id}', [TransferController::class, 'prepare']);
+
+
+
+ Route::get('/{id}', [TransferController::class, 'findTransfer']);
+
+ Route::post('/prepare/{id}', [TransferController::class, 'prepare'])->middleware(['auth.user']);
 
  Route::post('/drop/{id}', [TransferController::class, 'drop']);
 
  Route::get('/dropped-summary', [TransferController::class, 'droppedTransfersSummary']);
+
+
+Route::post('/verify/manual/{id}', [TransferController::class, 'verifyManual']);
+
+Route::post('/reject/{id}', [TransferController::class, 'reject']);

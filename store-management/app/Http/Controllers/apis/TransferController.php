@@ -77,9 +77,13 @@ class TransferController extends Controller
 
     }
 
-     public function prepare(string $id)
+     public function prepare(Request $request,string $id)
     {
-        $this->transferService->prepareTransfer($id);
+
+
+        $user=$request->user() ;
+
+        $this->transferService->prepareTransfer($id,$user->id);
 
         return response()->json([
 
@@ -139,6 +143,70 @@ class TransferController extends Controller
 }
 
 
+
+public function findTransfer(Request $request,string $id){
+
+
+    $transfer=$this->transferService->findTransfer($id);
+
+    if (!$transfer) {
+    
+       return response()->json([
+
+        'status'=>'error',
+        'message'=>'Transfer not found'
+        
+       ],404);
+    
+    }
+
+        return response()->json([
+
+
+        'status'=>'success',
+        'message'=>'transfer retrieved successfully',
+        'result'=>new TransferCardResource($transfer) 
+
+
+        ]);
+
+
+}
+
+ public function verifyManual(string $id, Request $request)
+    {
+        $validated = $request->validate([
+            'notes' => ['nullable', 'string'],
+        ]);
+
+        $this->transferService->verifyTransferManually(
+            $id,
+            $validated['notes'] ?? null
+        );
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Transfer verified manually successfully',
+        ]);
+    }
+
+
+     public function reject(string $id, Request $request)
+    {
+        $validated = $request->validate([
+            'notes' => ['nullable', 'string'],
+        ]);
+
+        $this->transferService->rejectTransfer(
+            $id,
+            $validated['notes'] ?? null
+        );
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Transfer rejected successfully',
+        ]);
+    }
 
 
 

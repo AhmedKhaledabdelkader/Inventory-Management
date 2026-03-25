@@ -102,10 +102,10 @@ class TransferService
 
 
  
-    public function prepareTransfer(string $id){
+    public function prepareTransfer(string $id,string $userId){
 
 
-        return $this->transferRepository->markPrepared($id);
+        return $this->transferRepository->markPrepared($id,$userId);
     }
 
      public function dropTransfer(string $id, string $reason){
@@ -126,6 +126,32 @@ class TransferService
 {
     return $this->transferRepository->getDroppedTransfersSummary();
 }
+
+
+public function findTransfer(string $id){
+
+
+    $transfer=$this->transferRepository->findById($id) ;
+
+    return $transfer ;
+
+
+
+}
+
+
+ public function verifyTransferManually(string $transferId, ?string $notes = null): bool
+    {
+        return $this->transferRepository->markVerified($transferId, 'manual', $notes);
+    }
+
+   
+
+    public function rejectTransfer(string $transferId, ?string $notes = null): bool
+    {
+        return $this->transferRepository->markRejected($transferId, $notes);
+    }
+
 
 
 

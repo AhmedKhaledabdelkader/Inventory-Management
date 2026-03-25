@@ -16,9 +16,11 @@ interface TransferRepositoryInterface
 
     public function updateAction(string $id, string $action);
 
-    public function markPrepared(string $id): bool ;
+    public function markPrepared(string $id,string $userId): bool ;
 
   public function markDropped(string $id, string $reason): bool   ;
+
+  public function markDroppedFromQc(string $id, string $reason): bool;
 
   public function getDroppedTransfersSummary(): array;
 
@@ -27,6 +29,16 @@ interface TransferRepositoryInterface
 
   public function getDroppedTransfers(?string $search = null) ;
 
-    public function summary(): array;
+public function summary(): array;
+
+public function findById(string $id);
+
+public function getVerificationTransfer(string $id);
+
+public function markVerified(string $id, string $method, ?string $notes = null): bool;
+
+public function markRejected(string $id, ?string $notes = null): bool;
+
+public function updateVerificationNotes(string $id, ?string $notes = null): bool;
     
 }

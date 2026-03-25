@@ -23,6 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'validate.update.user'=>\App\Http\Middleware\ValidateUpdateUser::class,
             'auth.user'=> \App\Http\Middleware\AuthenticationMiddleware::class,
             'role' => \App\Http\Middleware\RoleMiddleware::class,
+            'validate.transfer.issue'=>\App\Http\Middleware\ValidateTransferIssue::class,
             
              
 
