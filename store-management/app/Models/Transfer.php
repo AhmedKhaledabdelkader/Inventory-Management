@@ -38,6 +38,8 @@ class Transfer extends Model
         'dropped_at',
         'prepared_at',
         'prepared_by',
+        'boxing_status',
+        'boxed_at',
     ];
 
     protected $casts = [
@@ -49,6 +51,8 @@ class Transfer extends Model
         'dropped_at' => 'datetime',
         'prepared_at' => 'datetime',
         'verified_at' => 'datetime',
+          'boxed_at' => 'datetime',
+
     ];
 
 
@@ -72,6 +76,11 @@ class Transfer extends Model
 public function issues()
 {
     return $this->hasMany(TransferIssue::class, 'transfer_id');
+}
+
+public function boxes()
+{
+    return $this->hasMany(Box::class, 'transfer_id');
 }
 
     

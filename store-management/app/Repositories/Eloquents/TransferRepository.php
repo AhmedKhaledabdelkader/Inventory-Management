@@ -212,14 +212,49 @@ public function updateVerificationNotes(string $id, ?string $notes = null): bool
 
 
 
+public function getVerifiedTransfers(?string $search = null)
+{
+    $query = $this->model->where('verification_status', 'verified');
+
+    if ($search) {
+        $query->where(function ($q) use ($search) {
+            $q->where('reference_no', 'like', "%{$search}%")
+              ->orWhere('title', 'like', "%{$search}%");
+        });
+    }
+
+    return $query->latest()->get();
+}
+
+
+
+public function markAsBoxed(string $id): bool
+{
+    $transfer = $this->model->findOrFail($id);
+
+    return $transfer->update([
+        'boxing_status' => 'boxed',
+        'boxed_at' => now(),
+    ]);
+}
 
 
 
 
 
 
+public function markBackToHold(string $id, string $reason): bool
+{
+    $transfer = $this->model->findOrFail($id);
 
-
+    return $transfer->update([
+        'current_action' => null, // back to normal flow
+        'external_status' => 'On Hold', // 👈 important
+        'verification_status' => 'rejected',
+        'drop_reason' => $reason, // optional keep reason
+        'dropped_at' => null, // clear old drop
+    ]);
+}
 
 
 

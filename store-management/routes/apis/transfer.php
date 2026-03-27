@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\Route;
 
  Route::get('/dropped', [TransferController::class, 'indexDroppedTransfers']);
 
+ Route::get('/verified', [TransferController::class, 'indexVerifiedTransfers']);
+
  Route::post('/sync', [TransferController::class, 'sync']);
 
  Route::get('/summary', [TransferController::class, 'getSummary']);
-
-
 
 
  Route::get('/{id}', [TransferController::class, 'findTransfer']);

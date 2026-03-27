@@ -5,6 +5,7 @@ namespace App\Http\Controllers\apis;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DroppedTransferResource;
 use App\Http\Resources\TransferCardResource;
+use App\Http\Resources\VerifiedTransferSelectionResource;
 use App\Services\TransferService;
 use Illuminate\Http\Request;
 
@@ -72,6 +73,21 @@ class TransferController extends Controller
             'status' => 'success',
             'message' => 'Dropped transfers retrieved successfully',
             'result' => TransferCardResource::collection($transfers),
+
+        ]) ;
+
+    }
+
+    
+    public function indexVerifiedTransfers(Request $request){
+
+        $transfers=$this->transferService->getVerifiedTransfers($request->all()) ;
+
+        return response()->json([
+
+            'status' => 'success',
+            'message' => 'verified transfers retrieved successfully',
+            'result' => VerifiedTransferSelectionResource::collection($transfers),
 
         ]) ;
 

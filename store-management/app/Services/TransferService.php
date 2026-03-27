@@ -101,6 +101,13 @@ class TransferService
     }
 
 
+     public function getVerifiedTransfers(array $data)
+    {
+        return $this->transferRepository->getVerifiedTransfers($data['search']??"");
+    }
+    
+
+
  
     public function prepareTransfer(string $id,string $userId){
 

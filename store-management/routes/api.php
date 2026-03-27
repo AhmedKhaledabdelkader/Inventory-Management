@@ -20,3 +20,11 @@ Route::prefix('transfers_issues')->group(base_path('routes/apis/transferIssue.ph
 
 
 Route::prefix('notifications')->group(base_path('routes/apis/notification.php'));
+
+
+Route::prefix('boxes')->group(base_path('routes/apis/box.php'));
+
+Route::prefix('lots')->group(base_path('routes/apis/lot.php'));
+
+
+Route::prefix('runner-manager')->group(base_path('routes/apis/runner-manager.php'));

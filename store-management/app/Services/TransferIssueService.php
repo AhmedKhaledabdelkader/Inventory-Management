@@ -42,10 +42,7 @@ class TransferIssueService
             'notified_user_id' => $transfer->prepared_by,
         ]);
 
-        $this->transferRepository->markDroppedFromQc(
-            $transfer->id,
-            $data['description']
-        );
+    $this->transferRepository->markBackToHold($transfer->id,$data['description']);
 
         $this->notifyPicker($transfer->prepared_by, $transfer, $issue);
 

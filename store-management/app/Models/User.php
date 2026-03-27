@@ -90,5 +90,11 @@ class User extends Authenticatable
     }
 
 
+    public function lots()
+{
+    return $this->hasMany(Lot::class, 'runner_id');
+}
+  
+
 
 }

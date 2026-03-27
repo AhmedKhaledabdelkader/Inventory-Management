@@ -33,11 +33,17 @@ public function summary(): array;
 
 public function findById(string $id);
 
+public function getVerifiedTransfers(?string $search = null);
+
+public function markAsBoxed(string $id): bool;
+
 public function getVerificationTransfer(string $id);
 
 public function markVerified(string $id, string $method, ?string $notes = null): bool;
 
 public function markRejected(string $id, ?string $notes = null): bool;
+
+public function markBackToHold(string $id, string $reason): bool ;
 
 public function updateVerificationNotes(string $id, ?string $notes = null): bool;
     

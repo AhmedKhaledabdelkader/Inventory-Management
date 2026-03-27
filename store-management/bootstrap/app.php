@@ -24,7 +24,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'auth.user'=> \App\Http\Middleware\AuthenticationMiddleware::class,
             'role' => \App\Http\Middleware\RoleMiddleware::class,
             'validate.transfer.issue'=>\App\Http\Middleware\ValidateTransferIssue::class,
-            
+            'validate.box'=>\App\Http\Middleware\ValidateBox::class,
+            'validate.lot'=>\App\Http\Middleware\ValidateLot::class,
+             'validate.runner.id'=>\App\Http\Middleware\ValidateRunnerId::class,
              
 
 
