@@ -33,4 +33,7 @@ Route::prefix('runner-manager')->group(base_path('routes/apis/runner-manager.php
 Route::prefix('runners')->group(base_path('routes/apis/runner.php'));
 
 
+Route::prefix('dashboard')->group(base_path('routes/apis/dashboard.php'));
+
+
 Route::prefix('media')->group(base_path('routes/apis/media.php'));
