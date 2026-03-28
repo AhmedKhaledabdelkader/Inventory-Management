@@ -27,6 +27,12 @@ return Application::configure(basePath: dirname(__DIR__))
             'validate.box'=>\App\Http\Middleware\ValidateBox::class,
             'validate.lot'=>\App\Http\Middleware\ValidateLot::class,
              'validate.runner.id'=>\App\Http\Middleware\ValidateRunnerId::class,
+              'validate.lotCode'=>\App\Http\Middleware\ValidateLotCode::class,
+              'validate.manualStatus'=>\App\Http\Middleware\ValidateRunnerManualStatus::class,
+              'validate.runnerDelivery'=>\App\Http\Middleware\ValidateRunnerDelivery::class,
+              
+
+             
              
 
 

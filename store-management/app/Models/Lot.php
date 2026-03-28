@@ -18,7 +18,11 @@ class Lot extends Model
         'status',
         'created_by',
         "runner_id",
-        "assigned_at"
+        "assigned_at",
+    'in_transit_at',
+    'delivered_at',
+    'delivery_notes',
+    'delivery_photo_path',
     ];
 
     public function boxes()
@@ -47,6 +51,12 @@ public function runner()
 {
     return $this->belongsTo(User::class, 'runner_id');
 }
+
+protected $casts = [
+    'assigned_at' => 'datetime',
+    'in_transit_at' => 'datetime',
+    'delivered_at' => 'datetime',
+];
 
 
 }

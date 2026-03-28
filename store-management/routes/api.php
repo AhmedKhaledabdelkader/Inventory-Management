@@ -28,3 +28,9 @@ Route::prefix('lots')->group(base_path('routes/apis/lot.php'));
 
 
 Route::prefix('runner-manager')->group(base_path('routes/apis/runner-manager.php'));
+
+
+Route::prefix('runners')->group(base_path('routes/apis/runner.php'));
+
+
+Route::prefix('media')->group(base_path('routes/apis/media.php'));

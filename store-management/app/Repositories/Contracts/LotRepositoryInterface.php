@@ -21,4 +21,14 @@ public function getLotsPerRunner();
 
 
 
+public function findByCode(string $lotCode);
+
+public function updateStatus(string $lotId, array $data): bool;
+
+public function getRunnerLots(string $runnerId, ?string $status = null);
+
+public function getRunnerDashboardStats(string $runnerId): array;
+
+
+
 }
