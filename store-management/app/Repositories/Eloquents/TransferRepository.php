@@ -332,4 +332,16 @@ public function getStoreManagerOnHoldCount(string $locationCode): int
 
 
 
+public function updateVerificationProgress(string $id, array $progress): bool
+{
+    $transfer = $this->model->findOrFail($id);
+
+    return $transfer->update([
+        'verification_progress' => $progress,
+    ]);
+}
+
+
+
+
 }

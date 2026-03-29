@@ -234,4 +234,24 @@ public function findTransfer(Request $request,string $id){
 
 
 
+
+
+
+     public function scan(string $id, Request $request)
+    {
+        $data=$request->all() ;
+
+        $result = $this->transferService->scanBarcode(
+            $id,
+            $data['barcode']
+        );
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Barcode scanned successfully',
+            'result' => $result,
+        ]);
+    }
+
+
 }

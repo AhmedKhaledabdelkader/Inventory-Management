@@ -4,8 +4,7 @@ namespace App\Services;
 
 use App\Http\Resources\ExternalTransferResource;
 use App\Repositories\Contracts\TransferRepositoryInterface;
-
-
+use Exception;
 use Illuminate\Support\Facades\Http;
 
 class TransferService
@@ -158,6 +157,100 @@ public function findTransfer(string $id){
     {
         return $this->transferRepository->markRejected($transferId, $notes);
     }
+
+
+
+    /*.................Scaning Barcode in Quality Control................*/
+
+
+     public function scanBarcode(string $transferId, string $barcode): array
+    {
+        $transfer = $this->transferRepository->findById($transferId);
+
+        if (!$transfer) {
+            throw new Exception('Transfer not found.');
+        }
+
+        $items = collect($transfer->items ?? []);
+
+        if ($items->isEmpty()) {
+            throw new Exception('This transfer has no items.');
+        }
+
+        $matchedItem = $items->first(function ($item) use ($barcode) {
+            return (string) ($item['barcode'] ?? '') === (string) $barcode;
+        });
+
+        if (!$matchedItem) {
+            throw new Exception('Barcode does not belong to this transfer.');
+        }
+
+        $sku = $matchedItem['sku'];
+        $requiredQty = (int) ($matchedItem['qty'] ?? 0);
+
+        $progress = $transfer->verification_progress ?? [];
+
+        if (!isset($progress[$sku])) {
+            $progress[$sku] = [
+                'sku' => $sku,
+                'barcode' => $matchedItem['barcode'] ?? null,
+                'name' => $matchedItem['name'] ?? null,
+                'required_qty' => $requiredQty,
+                'scanned_qty' => 0,
+                'is_verified' => false,
+            ];
+        }
+
+        $currentScanned = (int) $progress[$sku]['scanned_qty'];
+
+        if ($currentScanned >= $requiredQty) {
+            throw new Exception("SKU {$sku} is already fully verified.");
+        }
+
+        $progress[$sku]['scanned_qty'] = $currentScanned + 1;
+        $progress[$sku]['is_verified'] = $progress[$sku]['scanned_qty'] >= $requiredQty;
+
+        $this->transferRepository->updateVerificationProgress($transferId, $progress);
+
+        $allVerified = $this->allItemsVerified($items, $progress);
+
+        if ($allVerified) {
+            $this->transferRepository->markVerified($transferId,'barcode_scan');
+        }
+
+        return [
+            'sku' => $sku,
+            'barcode' => $barcode,
+            'required_qty' => $requiredQty,
+            'scanned_qty' => $progress[$sku]['scanned_qty'],
+            'is_verified' => $progress[$sku]['is_verified'],
+            'transfer_verified' => $allVerified,
+        ];
+    }
+
+    protected function allItemsVerified($items, array $progress): bool
+    {
+        foreach ($items as $item) {
+            $sku = $item['sku'] ?? null;
+            $requiredQty = (int) ($item['qty'] ?? 0);
+
+            if (!$sku) {
+                return false;
+            }
+
+            $scannedQty = (int) data_get($progress, "{$sku}.scanned_qty", 0);
+
+            if ($scannedQty < $requiredQty) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+
+
 
 
 

@@ -25,6 +25,7 @@ class Transfer extends Model
         'title',
         'items_names',
         'items',
+        'verification_progress',
         'current_action',
         'is_missing_from_api',
         'payload',
@@ -44,6 +45,7 @@ class Transfer extends Model
 
     protected $casts = [
         'payload' => 'array',
+        'verification_progress'=>'array',
         'items' => 'array',
         'external_updated_at' => 'datetime',
         'last_synced_at' => 'datetime',

@@ -41,6 +41,8 @@ public function getVerificationTransfer(string $id);
 
 public function markVerified(string $id, string $method, ?string $notes = null): bool;
 
+public function updateVerificationProgress(string $id, array $progress): bool;
+
 public function markRejected(string $id, ?string $notes = null): bool;
 
 public function markBackToHold(string $id, string $reason): bool ;

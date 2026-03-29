@@ -28,4 +28,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/verify/manual/{id}', [TransferController::class, 'verifyManual'])->middleware(['auth.user']);
 
+Route::post('/verify/scan-barcode/{id}', [TransferController::class, 'scan'])->middleware(['auth.user','validate.barcode']);
+
 Route::post('/reject/{id}', [TransferController::class, 'reject'])->middleware(['auth.user']);
+
