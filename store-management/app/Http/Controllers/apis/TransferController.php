@@ -87,7 +87,11 @@ class TransferController extends Controller
     
     public function indexVerifiedTransfers(Request $request){
 
-        $transfers=$this->transferService->getVerifiedTransfers($request->all()) ;
+
+        
+          $locationCode = $request->user()->location_code;
+
+        $transfers=$this->transferService->getVerifiedTransfers($locationCode,$request->all()) ;
 
         return response()->json([
 

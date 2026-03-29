@@ -4,24 +4,26 @@ use App\Http\Controllers\apis\TransferController;
 use Illuminate\Support\Facades\Route;
 
 
- Route::get('/hold', [TransferController::class, 'indexHoldTransfers'])->middleware(['auth.user']);
+ Route::get('/hold', [TransferController::class, 'indexHoldTransfers'])->middleware(['auth.user',"role:Picker"]);
 
- Route::get('/prepared', [TransferController::class, 'indexPreparedTransfers'])->middleware(['auth.user']);
+ Route::get('/prepared', [TransferController::class, 'indexPreparedTransfers'])->middleware(['auth.user',
+"role:Picker,Quality Control"]);
 
- Route::get('/dropped', [TransferController::class, 'indexDroppedTransfers'])->middleware(['auth.user']);
+ Route::get('/dropped', [TransferController::class, 'indexDroppedTransfers'])->middleware(['auth.user',
+"role:Picker,Quality Control"]);
 
- Route::get('/verified', [TransferController::class, 'indexVerifiedTransfers'])->middleware(['auth.user']);
+ Route::get('/verified', [TransferController::class, 'indexVerifiedTransfers'])->middleware(['auth.user','role:Quality Control']);
 
  Route::post('/sync', [TransferController::class, 'sync']);
 
- Route::get('/summary', [TransferController::class, 'getSummary'])->middleware(['auth.user']);
+ Route::get('/summary', [TransferController::class, 'getSummary'])->middleware(['auth.user','role:Picker']);
 
 
  Route::get('/{id}', [TransferController::class, 'findTransfer'])->middleware(['auth.user']);
 
- Route::post('/prepare/{id}', [TransferController::class, 'prepare'])->middleware(['auth.user']);
+ Route::post('/prepare/{id}', [TransferController::class, 'prepare'])->middleware(['auth.user',"role:Picker"]);
 
- Route::post('/drop/{id}', [TransferController::class, 'drop'])->middleware(['auth.user','validate.dropReason']);
+ Route::post('/drop/{id}', [TransferController::class, 'drop'])->middleware(['auth.user','role:Picker','validate.dropReason']);
 
  Route::get('/dropped-summary', [TransferController::class, 'droppedTransfersSummary'])->middleware(['auth.user']);
 

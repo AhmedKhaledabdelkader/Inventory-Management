@@ -72,7 +72,7 @@ class LotService
         return $code;
     }
 
-
+/*
     public function getAllLots(){
 
 
@@ -82,13 +82,26 @@ class LotService
 
 
 
+    }*/
+
+
+    public function getAllLots(string $locationCode){
+
+
+        $lots=$this->lotRepository->getLotsByLocation($locationCode) ;
+
+        return $lots ;
+
+
+
     }
 
 
     
-     public function getAvaliableBoxes(array $data)
+     public function getAvaliableBoxes(string $locationCode,array $data)
     {
-        return $this->boxRepository->getAvailableBoxes($data['destination']??"",$data['search']??"");
+        return $this->boxRepository->getAvailableBoxesByLocationAndDestination($locationCode,
+        $data['destination']??"",$data['search']??"");
     }
     
 

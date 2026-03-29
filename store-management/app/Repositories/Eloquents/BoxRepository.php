@@ -80,7 +80,7 @@ public function getBoxesByLocation(string $locationCode)
     return $this->model
         ->with('transfer')
         ->whereHas('transfer', function ($q) use ($locationCode) {
-            $q->where('to_warehouse', $locationCode);
+            $q->where('from_warehouse', $locationCode);
         })
         ->latest()
         ->get();
@@ -94,7 +94,7 @@ public function getAvailableBoxesByLocationAndDestination(string $locationCode, 
         ->where('status', 'pending')
         ->where('destination', $destination)
         ->whereHas('transfer', function ($q) use ($locationCode) {
-            $q->where('to_warehouse', $locationCode);
+            $q->where('from_warehouse', $locationCode);
         });
 
     if ($search) {

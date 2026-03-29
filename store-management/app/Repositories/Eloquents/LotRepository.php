@@ -227,9 +227,9 @@ public function getDeliveredLotsCountByLocation(string $locationCode): int
 
 public function getLotsByLocation( string $locationCode) {
     $query = $this->model
-        ->with(['runner', 'boxes.transfer'])
+        ->with(['user','runner', 'boxes.transfer'])
         ->whereHas('boxes.transfer', function ($q) use ($locationCode) {
-            $q->where('to_warehouse', $locationCode);
+            $q->where('from_warehouse', $locationCode);
         })
         ->latest();
 

@@ -40,7 +40,10 @@ class LotController extends Controller
 public function index(Request $request){
 
 
-    $lots=$this->lotService->getAllLots() ;
+  $locationCode = $request->user()->location_code;
+
+
+    $lots=$this->lotService->getAllLots($locationCode) ;
 
 
     return response()->json([
@@ -59,7 +62,9 @@ public function index(Request $request){
 
 public function indexAvaliableBoxes(Request $request){
 
-$boxes=$this->lotService->getAvaliableBoxes($request->all()) ;
+$locationCode = $request->user()->location_code;
+
+$boxes=$this->lotService->getAvaliableBoxes($locationCode,$request->all()) ;
 
         return response()->json([
 

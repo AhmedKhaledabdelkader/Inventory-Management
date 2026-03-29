@@ -13,9 +13,12 @@ class DashboardController extends Controller
     public function __construct(protected DashboardService $dashboardService) {}
 
 
-public function getQualityControlsummary()
+public function getQualityControlsummary(Request $request)
 {
-    $summary = $this->dashboardService->getQualityControlDashboardSummary();
+
+    $locationCode = $request->user()->location_code;
+
+    $summary = $this->dashboardService->getQualityControlDashboardSummary($locationCode);
 
     return response()->json([
         'status' => 'success',

@@ -100,9 +100,9 @@ class TransferService
     }
 
 
-     public function getVerifiedTransfers(array $data)
+     public function getVerifiedTransfers(string $locationCode,array $data)
     {
-        return $this->transferRepository->getVerifiedTransfers($data['search']??"");
+        return $this->transferRepository->getVerifiedTransfersByLocation($locationCode,$data['search']??"");
     }
     
 

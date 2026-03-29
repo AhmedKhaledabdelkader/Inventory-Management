@@ -11,5 +11,7 @@ public function getQualityControlDashboardSummary(): array;
 
 public function getStoreManagerDashboardSummary(): array;
 
+public function getQualityControlDashboardSummaryByLocation(string $locationCode): array ;
+
 
 }

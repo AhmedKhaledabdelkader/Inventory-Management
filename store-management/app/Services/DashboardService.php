@@ -14,9 +14,9 @@ class DashboardService
 
 
 
- public function getQualityControlDashboardSummary(): array
+ public function getQualityControlDashboardSummary(string $locaionCode): array
     {
-        return $this->dashboardRepository->getQualityControlDashboardSummary();
+        return $this->dashboardRepository->getQualityControlDashboardSummaryByLocation($locaionCode);
     }
 
      public function getDashboardSummary(): array

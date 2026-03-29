@@ -68,10 +68,10 @@ class BoxService
     }
 
 
- public function getAllBoxes()  {
+ public function getAllBoxes(string $locationCode)  {
     
 
-    $boxes=$this->boxRepository->getAll() ;
+    $boxes=$this->boxRepository->getBoxesByLocation($locationCode) ;
 
 
     return $boxes ;

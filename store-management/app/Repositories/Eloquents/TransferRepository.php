@@ -312,7 +312,7 @@ public function getVerifiedTransfersByLocation(string $locationCode, ?string $se
 {
     $query = $this->model
         ->where('verification_status', 'verified')
-        ->where('to_warehouse', $locationCode)
+        ->where('from_warehouse', $locationCode)
         ->latest();
 
     $this->applySearch($query,$search) ;

@@ -36,9 +36,13 @@ class BoxController extends Controller
     }
 
 
-      public function index()
+      public function index(Request $request)
     {
-        $boxes = $this->boxService->getAllBoxes();
+   
+            $locationCode = $request->user()->location_code;
+
+
+        $boxes = $this->boxService->getAllBoxes($locationCode);
 
         return response()->json([
             'status' => 'success',
