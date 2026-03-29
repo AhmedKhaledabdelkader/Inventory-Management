@@ -24,6 +24,15 @@ public function getQualityControlsummary()
     ]);
 }
 
+public function getStoreManagerDashboard()
+    {
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Store manager dashboard retrieved successfully',
+            'result' => $this->dashboardService->getDashboardSummary(),
+        ]);
+    }
+
 
 
     

@@ -145,15 +145,97 @@ public function getRunnerDashboardStats(string $runnerId): array
 }
 
 
+public function getInTransitLots()
+{
+    return $this->model
+        ->with(['runner', 'boxes'])
+        ->where('status', 'in_transit')
+        ->latest()
+        ->get();
+}
+
+public function getDeliveredLots()
+{
+    return $this->model
+        ->with(['runner', 'boxes'])
+        ->where('status', 'delivered')
+        ->latest()
+        ->get();
+}
+
+
+public function markReceived(string $lotId, string $userId, ?string $notes = null): bool
+{
+    $lot = $this->model->findOrFail($lotId);
+
+    return $lot->update([
+        'status' => 'received',
+        'received_at' => now(),
+        'received_by' => $userId,
+        'receipt_notes' => $notes,
+    ]);
+}
 
 
 
+/*.............location id .............*/ 
 
 
+public function getInTransitLotsByLocation(string $locationCode)
+{
+    return $this->model
+        ->with(['runner', 'boxes.transfer'])
+        ->where('status', 'in_transit')
+        ->whereHas('boxes.transfer', function ($q) use ($locationCode) {
+            $q->where('to_warehouse', $locationCode);
+        })
+        ->latest()
+        ->get();
+}
+
+public function getDeliveredLotsByLocation(string $locationCode)
+{
+    return $this->model
+        ->with(['runner', 'boxes.transfer'])
+        ->where('status', 'delivered')
+        ->whereHas('boxes.transfer', function ($q) use ($locationCode) {
+            $q->where('to_warehouse', $locationCode);
+        })
+        ->latest()
+        ->get();
+}
+
+public function getInTransitLotsCountByLocation(string $locationCode): int
+{
+    return $this->model
+        ->where('status', 'in_transit')
+        ->whereHas('boxes.transfer', function ($q) use ($locationCode) {
+            $q->where('to_warehouse', $locationCode);
+        })
+        ->count();
+}
+
+public function getDeliveredLotsCountByLocation(string $locationCode): int
+{
+    return $this->model
+        ->where('status', 'delivered')
+        ->whereHas('boxes.transfer', function ($q) use ($locationCode) {
+            $q->where('to_warehouse', $locationCode);
+        })
+        ->count();
+}
+
+public function getLotsByLocation( string $locationCode) {
+    $query = $this->model
+        ->with(['runner', 'boxes.transfer'])
+        ->whereHas('boxes.transfer', function ($q) use ($locationCode) {
+            $q->where('to_warehouse', $locationCode);
+        })
+        ->latest();
 
 
-
-
+    return $query->get();
+}
 
 
 

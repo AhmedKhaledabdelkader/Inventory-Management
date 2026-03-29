@@ -19,4 +19,12 @@ public function assignToLot(string $boxId, string $lotId): bool;
 public function findByIds(array $ids) ;
 
 
+
+public function getBoxesByLocation(string $locationCode);
+
+public function getAvailableBoxesByLocationAndDestination(string $locationCode, string $destination, ?string $search = null);
+
+public function getBoxesCountByLocation(string $locationCode): int;
+
+
 }

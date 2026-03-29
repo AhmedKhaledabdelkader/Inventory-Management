@@ -37,7 +37,9 @@ class TransferController extends Controller
     public function  indexHoldTransfers(Request $request){
 
 
-        $transfers=$this->transferService->getHoldTransfers($request->all()) ;
+        $locationCode = $request->user()->location_code;
+
+        $transfers=$this->transferService->getHoldTransfers($locationCode,$request->all()) ;
 
         return response()->json([
 
@@ -52,7 +54,9 @@ class TransferController extends Controller
 
     public function indexPreparedTransfers(Request $request){
 
-        $transfers=$this->transferService->getPreparedTransfers($request->all()) ;
+          $locationCode = $request->user()->location_code;
+
+        $transfers=$this->transferService->getPreparedTransfers($locationCode,$request->all()) ;
 
         return response()->json([
 
@@ -66,7 +70,9 @@ class TransferController extends Controller
 
     public function indexDroppedTransfers(Request $request){
 
-        $transfers=$this->transferService->getDroppedTransfers($request->all()) ;
+          $locationCode = $request->user()->location_code;
+
+        $transfers=$this->transferService->getDroppedTransfers($locationCode,$request->all()) ;
 
         return response()->json([
 
@@ -121,10 +127,12 @@ class TransferController extends Controller
     }
 
 
-    public function getSummary(){
+    public function getSummary(Request $request){
 
     
-        $summary=$this->transferService->getSummary() ;
+         $locationCode = $request->user()->location_code;
+    
+        $summary=$this->transferService->getSummary($locationCode) ;
 
         return response()->json([
 

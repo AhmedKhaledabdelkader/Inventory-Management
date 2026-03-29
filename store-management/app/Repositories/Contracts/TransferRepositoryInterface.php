@@ -29,7 +29,7 @@ interface TransferRepositoryInterface
 
   public function getDroppedTransfers(?string $search = null) ;
 
-public function summary(): array;
+public function summary(string $locationCode): array;
 
 public function findById(string $id);
 
@@ -46,5 +46,18 @@ public function markRejected(string $id, ?string $notes = null): bool;
 public function markBackToHold(string $id, string $reason): bool ;
 
 public function updateVerificationNotes(string $id, ?string $notes = null): bool;
+
+
+public function getOnHoldTransfersByLocation(string $locationCode, ?string $search = null);
+
+public function getVerifiedTransfersByLocation(string $locationCode, ?string $search = null);
+
+public function getStoreManagerOnHoldCount(string $locationCode): int;
+
+public function getPreparedTransfersByLocation(string $locationCode, ?string $search = null);
+
+
+public function getDroppedTransfersByLocation(string $locationCode, ?string $search = null);
+
     
 }

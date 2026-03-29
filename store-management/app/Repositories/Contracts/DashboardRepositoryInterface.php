@@ -9,6 +9,7 @@ interface DashboardRepositoryInterface
 
 public function getQualityControlDashboardSummary(): array;
 
+public function getStoreManagerDashboardSummary(): array;
 
 
 }

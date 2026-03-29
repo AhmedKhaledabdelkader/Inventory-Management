@@ -29,7 +29,8 @@ class TransferRepository implements TransferRepositoryInterface
             'to_warehouse' => $data['to_warehouse'] ?? null,
             'qty' => (int) ($data['qty'] ?? 0),
             'sku_count' => (int) ($data['sku_count'] ?? 0),
-            'items_names' => $data['items_names'] ?? null,
+            //'items_names' => $data['items_names'] ?? null,
+               'items_names'=> is_array($data['items_names'])? implode(', ', $data['items_names']) : ($data['items_names'] ?? null),
             'items' => $data['items'] ?? null,
             'payload' => $data['payload'] ?? null,
             'external_updated_at' => $data['external_updated_at'] ?? null,
@@ -140,16 +141,18 @@ public function markDroppedFromQc(string $id, string $reason): bool
     ]);
 }
 
-    public function summary(): array
-    {
-        return [
-            'total' => $this->model->count(),
-            'prepared' => $this->model->where('current_action', 'prepared')->count(),
-            'dropped' => $this->model->where('current_action', 'dropped')->count(),
-            'pending' => $this->model->whereNull('current_action')->count(),
-            'missing' => $this->model->where('is_missing_from_api', true)->count(),
-        ];
-    }
+    public function summary(string $locationCode): array
+{
+    $query = $this->model->where('from_warehouse', $locationCode);
+
+    return [
+        'total'    => (clone $query)->count(),
+        'prepared' => (clone $query)->where('current_action', 'prepared')->count(),
+        'dropped'  => (clone $query)->where('current_action', 'dropped')->count(),
+        'pending'  => (clone $query)->whereNull('current_action')->count(),
+        'missing'  => (clone $query)->where('is_missing_from_api', true)->count(),
+    ];
+}
 
 
    
@@ -256,7 +259,74 @@ public function markBackToHold(string $id, string $reason): bool
     ]);
 }
 
+public function getOnHoldTransfersByLocation(string $locationCode, ?string $search = null)
+{
+    $query = $this->model
+        ->whereNull('current_action')
+        ->where('from_warehouse', $locationCode)
+        ->latest();
 
+   $this->applySearch($query,$search) ;
+
+    return $query->latest()->get();
+}
+
+
+public function getPreparedTransfersByLocation(string $locationCode, ?string $search = null)
+{
+    $query = $this->model
+        ->where('current_action','prepared')
+        ->where('from_warehouse', $locationCode)
+        ->latest();
+
+   $this->applySearch($query,$search) ;
+
+    
+    return $query->orderByDesc('prepared_at')->get();
+}
+
+
+public function getDroppedTransfersByLocation(string $locationCode, ?string $search = null)
+{
+    $query = $this->model
+        ->where('current_action','dropped')
+        ->where('from_warehouse', $locationCode)
+        ->latest();
+
+   $this->applySearch($query,$search) ;
+
+   return $query->orderByDesc('dropped_at')->get();
+}
+
+
+
+
+
+
+
+
+
+
+
+public function getVerifiedTransfersByLocation(string $locationCode, ?string $search = null)
+{
+    $query = $this->model
+        ->where('verification_status', 'verified')
+        ->where('to_warehouse', $locationCode)
+        ->latest();
+
+    $this->applySearch($query,$search) ;
+
+    return $query->latest()->get();
+}
+
+public function getStoreManagerOnHoldCount(string $locationCode): int
+{
+    return $this->model
+        ->whereNull('current_action')
+        ->where('to_warehouse', $locationCode)
+        ->count();
+}
 
 
 

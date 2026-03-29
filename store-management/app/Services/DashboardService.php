@@ -19,6 +19,11 @@ class DashboardService
         return $this->dashboardRepository->getQualityControlDashboardSummary();
     }
 
+     public function getDashboardSummary(): array
+    {
+        return $this->dashboardRepository->getStoreManagerDashboardSummary();
+    }
+
 
 
 

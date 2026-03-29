@@ -84,20 +84,20 @@ class TransferService
     }
     
 
-    public function getHoldTransfers(array $data)
+    public function getHoldTransfers(string $locationCode,array $data)
     {
-        return $this->transferRepository->getAllHoldTransfers($data['search']??"");
+        return $this->transferRepository->getOnHoldTransfersByLocation($locationCode,$data['search']??"");
     }
 
-    public function getPreparedTransfers(array $data)
+    public function getPreparedTransfers(string $locationCode,array $data)
     {
-        return $this->transferRepository->getPreparedTransfers($data['search']??"") ;
+        return $this->transferRepository->getPreparedTransfersByLocation($locationCode,$data['search']??"") ;
     }
 
 
-    public function getDroppedTransfers(array $data)
+    public function getDroppedTransfers(string $locationCode,array $data)
     {
-        return $this->transferRepository->getDroppedTransfers($data['search']??"");
+        return $this->transferRepository->getDroppedTransfersByLocation($locationCode,$data['search']??"");
     }
 
 
@@ -123,9 +123,9 @@ class TransferService
 
 
     
-     public function getSummary(): array
+     public function getSummary(string $locationCode): array
     {
-        return $this->transferRepository->summary();
+        return $this->transferRepository->summary($locationCode);
      }
 
 

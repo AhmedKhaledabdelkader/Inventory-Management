@@ -30,6 +30,12 @@ return Application::configure(basePath: dirname(__DIR__))
               'validate.lotCode'=>\App\Http\Middleware\ValidateLotCode::class,
               'validate.manualStatus'=>\App\Http\Middleware\ValidateRunnerManualStatus::class,
               'validate.runnerDelivery'=>\App\Http\Middleware\ValidateRunnerDelivery::class,
+            'validate.lotCodeAndReciptNote'=>\App\Http\Middleware\ValidateLotCodeAndReciptNote::class,
+            'validate.reciptNote'=>\App\Http\Middleware\ValidateReciptNote::class,
+            'validate.dropReason'=>\App\Http\Middleware\ValidateDropReason::class,
+             
+
+
               
 
              
@@ -63,9 +69,9 @@ return Application::configure(basePath: dirname(__DIR__))
             return response()->json([
                 'status'  => 'error',
                 'message' => $e->getMessage(),
-                'file'    => $e->getFile(),
-                'line'    => $e->getLine(),
-                'trace'   => $e->getTrace(), // optional, full stack trace
+               // 'file'    => $e->getFile(),
+               // 'line'    => $e->getLine(),
+               // 'trace'   => $e->getTrace(), // optional, full stack trace
             ], 500);
         });
 

@@ -23,6 +23,9 @@ class Lot extends Model
     'delivered_at',
     'delivery_notes',
     'delivery_photo_path',
+    'received_at',
+    'received_by',
+    'receipt_notes',
     ];
 
     public function boxes()
@@ -52,10 +55,16 @@ public function runner()
     return $this->belongsTo(User::class, 'runner_id');
 }
 
+public function receiver()
+{
+    return $this->belongsTo(User::class, 'received_by');
+}
+
 protected $casts = [
     'assigned_at' => 'datetime',
     'in_transit_at' => 'datetime',
     'delivered_at' => 'datetime',
+     'received_at' => 'datetime',
 ];
 
 

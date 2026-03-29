@@ -73,6 +73,52 @@ public function assignToLot(string $boxId, string $lotId): bool
 }
 
 
+/*..............location id.....................*/
+
+public function getBoxesByLocation(string $locationCode)
+{
+    return $this->model
+        ->with('transfer')
+        ->whereHas('transfer', function ($q) use ($locationCode) {
+            $q->where('to_warehouse', $locationCode);
+        })
+        ->latest()
+        ->get();
+}
+
+public function getAvailableBoxesByLocationAndDestination(string $locationCode, string $destination, ?string $search = null)
+{
+    $query = $this->model
+        ->with('transfer')
+        ->whereNull('lot_id')
+        ->where('status', 'pending')
+        ->where('destination', $destination)
+        ->whereHas('transfer', function ($q) use ($locationCode) {
+            $q->where('to_warehouse', $locationCode);
+        });
+
+    if ($search) {
+        $query->where(function ($q) use ($search) {
+            $q->where('box_code', 'like', "%{$search}%")
+              ->orWhereHas('transfer', function ($t) use ($search) {
+                  $t->where('reference_no', 'like', "%{$search}%");
+              });
+        });
+    }
+
+    return $query->get();
+}
+
+public function getBoxesCountByLocation(string $locationCode): int
+{
+    return $this->model
+        ->whereHas('transfer', function ($q) use ($locationCode) {
+            $q->where('to_warehouse', $locationCode);
+        })
+        ->count();
+}
+
+
 
 
 

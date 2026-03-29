@@ -20,7 +20,9 @@ class ExternalTransferResource extends JsonResource
             'to_warehouse' => $this->valueOf('ToWarehouse'),
             'qty' => collect($items)->sum('qty'),
             'sku_count' => count($items),
-            'items_names' => collect($items)->pluck('name')->filter()->values()->toArray(),
+            //'items_names' => collect($items)->pluck('name')->filter()->values()->toArray(),
+            // CORRECT ✅
+         'items_names' => collect($items)->pluck('name')->filter()->values()->implode(', '),
             'items' => $items,
             'payload' => $this->resource,
             'external_updated_at' => $this->dateValueOf('LastModifiedDateTime'),

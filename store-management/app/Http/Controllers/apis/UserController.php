@@ -147,6 +147,10 @@ class UserController extends Controller
         'user' => [
             'id' => $result['user']['id'],
             'name' => $result['user']['name'],
+            'roleId' => $result['user']['roles'][0]['id'] ?? null,
+            'roleName' => $result['user']['roles'][0]['name'] ?? null,
+             
+
         ],
         'token' => $result['token'],
         'token_type' => 'Bearer'

@@ -20,5 +20,22 @@ class DashboardRepository implements DashboardRepositoryInterface
         'delivered' => Lot::where('status', 'delivered')->count(),
     ];
 }
+
+
+public function getStoreManagerDashboardSummary(): array
+{
+    return [
+
+        'total_boxes' => Box::count(),
+        'onhold_transfers' => Transfer::where('external_status', 'On Hold')->whereNull('current_action')->count(),
+        'in_transit' => Lot::where('status', 'in_transit')->count(),
+        'delivered' => Lot::where('status', 'delivered')->count(),
+    ];
+}
+
+
+
+
+
   
 }
