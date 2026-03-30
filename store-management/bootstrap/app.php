@@ -34,17 +34,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'validate.reciptNote'=>\App\Http\Middleware\ValidateReciptNote::class,
             'validate.dropReason'=>\App\Http\Middleware\ValidateDropReason::class,
             'validate.barcode'=>\App\Http\Middleware\ValidateBarcode::class,
+            'validate.password'=>\App\Http\Middleware\ValidatePassword::class,
              
-
-
-              
-
-             
-             
-
-
-
-
              
         ]);
 

@@ -198,6 +198,40 @@ return 'invalid username or password' ;
 
 
 
+    public function changePassword($user, array $data)
+{
+    
+    if (!Hash::check($data['current_password'], $user->password)) {
+        return [
+            'success' => false,
+            'message' => 'Current password is incorrect',
+        ];
+    }
+
+    if ($data['current_password'] === $data['new_password']) {
+        return [
+            'success' => false,
+            'message' => 'New password must be different from current password',
+        ];
+    }
+
+    $updated = $this->userRepository->updatePassword(
+        $user,
+        Hash::make($data['new_password'])
+    );
+
+    if (!$updated) {
+        return [
+            'success' => false,
+            'message' => 'Password update failed',
+        ];
+    }
+
+    return [
+        'success' => true,
+        'message' => 'Password changed successfully',
+    ];
+}
 
 
 

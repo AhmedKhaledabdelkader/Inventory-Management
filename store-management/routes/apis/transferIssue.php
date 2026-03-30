@@ -5,4 +5,4 @@ use Illuminate\Support\Facades\Route;
 
 
   Route::post('/report/{id}', [TransferIssueController::class, 'reportIssue'])
-  ->middleware(['validate.transfer.issue','auth.user']);
+  ->middleware(['auth.user','roles:Quality Control','validate.transfer.issue']);

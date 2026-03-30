@@ -25,3 +25,5 @@ Route::post('/login', [UserController::class, 'login']);
 Route::post('/logout', [UserController::class, 'logout'])->middleware(['auth.user']);
 
 Route::post('/logoutAll', [UserController::class, 'logoutAll'])->middleware(['auth.user']);
+
+Route::post('/change-password', [UserController::class, 'changePassword'])->middleware(['auth.user','validate.password']);

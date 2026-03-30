@@ -204,5 +204,28 @@ public function logout(Request $request)
 
 
 
+
+   
+
+public function changePassword(Request $request)
+{
+   $data=$request->all();
+
+    $result = $this->userService->changePassword($request->user(), $data);
+
+    if (!$result['success']) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $result['message'],
+        ], 422);
+    }
+
+    return response()->json([
+        'status' => 'success',
+        'message' => $result['message'],
+    ]);
+}
+
+
     
 }

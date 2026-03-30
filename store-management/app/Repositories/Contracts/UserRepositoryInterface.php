@@ -22,6 +22,8 @@ interface UserRepositoryInterface
     public function getUserStatistics() ;
     
     public function search(array $data) ;
+
+    public function updatePassword($user, string $hashedPassword);
     
     
 }

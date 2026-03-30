@@ -115,9 +115,16 @@ public function search(array $data)
 public function findByName($name)
 {
     return $this->model->where('name', $name)->first();
-
-
     
+}
+
+
+
+public function updatePassword($user, string $hashedPassword)
+{
+    return $user->update([
+        'password' => $hashedPassword,
+    ]);
 }
 
 
