@@ -25,7 +25,7 @@ class TransferService
         $response = Http::withToken($token)
             ->acceptJson()
             ->get(config('services.external_transfer_api.base_url') . '/Transfer', [
-                '$filter' => "Status eq 'Hold' and FromWarehouse eq '99'",
+                '$filter' => "Status eq 'Hold'",
                 '$expand'=>"TransferLines"
 
             ]);
@@ -249,6 +249,11 @@ public function findTransfer(string $id){
     }
 
 
+
+    public function getErpStatus(): array
+{
+    return $this->transferRepository->getErpSyncStatus();
+}
 
 
 

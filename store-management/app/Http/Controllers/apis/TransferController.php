@@ -258,4 +258,16 @@ public function findTransfer(Request $request,string $id){
     }
 
 
+
+    public function erpStatus()
+{
+    $result = $this->transferService->getErpStatus();
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'ERP sync status retrieved successfully',
+        'result' => $result,
+    ]);
+}
+
 }

@@ -11,4 +11,4 @@ Artisan::command('inspire', function () {
 
 
 
-Schedule::command('transfers:sync')->everyFifteenSeconds() ;
+Schedule::command('transfers:sync')->hourly();

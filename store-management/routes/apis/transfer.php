@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Route;
 
  Route::post('/drop/{id}', [TransferController::class, 'drop'])->middleware(['auth.user','role:Picker','validate.dropReason']);
 
- Route::get('/dropped-summary', [TransferController::class, 'droppedTransfersSummary'])->middleware(['auth.user']);
+ Route::get('/stock-control/dropped-summary', [TransferController::class, 'droppedTransfersSummary'])->middleware(['auth.user']);
 
 
 Route::post('/verify/manual/{id}', [TransferController::class, 'verifyManual'])->middleware(['auth.user']);
@@ -34,3 +34,6 @@ Route::post('/verify/scan-barcode/{id}', [TransferController::class, 'scan'])->m
 
 Route::post('/reject/{id}', [TransferController::class, 'reject'])->middleware(['auth.user']);
 
+
+
+Route::get('/erp/status', [TransferController::class, 'erpStatus']);

@@ -61,5 +61,7 @@ public function getPreparedTransfersByLocation(string $locationCode, ?string $se
 
 public function getDroppedTransfersByLocation(string $locationCode, ?string $search = null);
 
+public function getErpSyncStatus(): array;
+
     
 }

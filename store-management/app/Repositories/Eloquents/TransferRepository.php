@@ -344,4 +344,33 @@ public function updateVerificationProgress(string $id, array $progress): bool
 
 
 
+
+public function getErpSyncStatus(): array
+{
+    $lastSyncedAt = $this->model->max('last_synced_at');
+
+    if (!$lastSyncedAt) {
+        return [
+            'is_connected' => false,
+            'last_synced_at' => null,
+            'message' => 'No sync has been recorded yet.',
+        ];
+    }
+
+    $lastSynced = \Carbon\Carbon::parse($lastSyncedAt);
+
+    $isConnected = $lastSynced->greaterThanOrEqualTo(now()->subMinutes(10));
+
+    return [
+        'is_connected' => $isConnected,
+        'last_synced_at' => $lastSynced->format('h:i A'),
+        'message' => $isConnected
+            ? 'All changes are synced to your ERP system in real-time.'
+            : 'ERP sync is delayed. Please check the connection.',
+    ];
+}
+
+
+
+
 }
