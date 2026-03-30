@@ -270,4 +270,17 @@ public function findTransfer(Request $request,string $id){
     ]);
 }
 
+public function qcDashboard(Request $request)
+{
+    $locationCode = $request->user()->location_code;
+
+    $summary = $this->transferService->getQcDashboardSummary($locationCode);
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'QC dashboard retrieved successfully',
+        'result' => $summary,
+    ]);
+}
+
 }

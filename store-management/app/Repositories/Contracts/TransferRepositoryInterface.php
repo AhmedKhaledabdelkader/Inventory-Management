@@ -63,5 +63,7 @@ public function getDroppedTransfersByLocation(string $locationCode, ?string $sea
 
 public function getErpSyncStatus(): array;
 
+public function getQualityControlSummary(string $locationCode): array;
+
     
 }

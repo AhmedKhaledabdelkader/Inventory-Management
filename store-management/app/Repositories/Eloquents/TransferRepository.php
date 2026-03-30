@@ -372,5 +372,28 @@ public function getErpSyncStatus(): array
 
 
 
+public function getQualityControlSummary(string $locationCode): array
+{
+    return [
+        'on_hold' => $this->model
+            ->where('external_status', 'On Hold')
+            ->whereNull('current_action')
+            ->where('from_warehouse', $locationCode)
+            ->count(),
+
+        'prepared' => $this->model
+            ->where('current_action', 'prepared')
+            ->where('from_warehouse', $locationCode)
+            ->count(),
+
+        'total_items' => $this->model
+            ->where('current_action', 'prepared')
+            ->where('from_warehouse', $locationCode)
+            ->sum('qty'),
+    ];
+}
+
+
+
 
 }

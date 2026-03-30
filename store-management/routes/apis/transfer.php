@@ -39,3 +39,6 @@ Route::post('/reject/{id}', [TransferController::class, 'reject'])->middleware([
 
 
 Route::get('/erp/status', [TransferController::class, 'erpStatus'])->middleware(['auth.user']);
+
+
+Route::get('/qc/dashboard', [TransferController::class, 'qcDashboard'])->middleware(['auth.user','role:Quality Control']);

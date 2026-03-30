@@ -256,7 +256,10 @@ public function findTransfer(string $id){
 }
 
 
-
+public function getQcDashboardSummary(string $locationCode): array
+{
+    return $this->transferRepository->getQualityControlSummary($locationCode);
+}
 
 
 

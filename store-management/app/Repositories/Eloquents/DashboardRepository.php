@@ -25,28 +25,28 @@ public function getQualityControlDashboardSummaryByLocation(string $locationCode
 {
     return [
         'total_boxes' => Box::whereHas('transfer', function ($q) use ($locationCode) {
-            $q->where('to_warehouse', $locationCode);
+            $q->where('from_warehouse', $locationCode);
         })->count(),
 
         'verified_transfers' => Transfer::where('verification_status', 'verified')
-            ->where('to_warehouse', $locationCode)
+            ->where('from_warehouse', $locationCode)
             ->count(),
 
         'pending' => Lot::where('status', 'pending')
             ->whereHas('boxes.transfer', function ($q) use ($locationCode) {
-                $q->where('to_warehouse', $locationCode);
+                $q->where('from_warehouse', $locationCode);
             })
             ->count(),
 
         'in_transit' => Lot::where('status', 'in_transit')
             ->whereHas('boxes.transfer', function ($q) use ($locationCode) {
-                $q->where('to_warehouse', $locationCode);
+                $q->where('from_warehouse', $locationCode);
             })
             ->count(),
 
         'delivered' => Lot::where('status', 'delivered')
             ->whereHas('boxes.transfer', function ($q) use ($locationCode) {
-                $q->where('to_warehouse', $locationCode);
+                $q->where('from_warehouse', $locationCode);
             })
             ->count(),
     ];
