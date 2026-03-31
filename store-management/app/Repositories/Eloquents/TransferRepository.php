@@ -324,7 +324,7 @@ public function getStoreManagerOnHoldCount(string $locationCode): int
 {
     return $this->model
         ->whereNull('current_action')
-        ->where('to_warehouse', $locationCode)
+        ->where('from_warehouse', $locationCode)
         ->count();
 }
 

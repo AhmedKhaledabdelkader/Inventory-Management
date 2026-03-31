@@ -25,7 +25,7 @@ class TransferService
         $response = Http::withToken($token)
             ->acceptJson()
             ->get(config('services.external_transfer_api.base_url') . '/Transfer', [
-                '$filter' => "Status eq 'Hold'",
+                '$filter' => "Status eq 'Hold' and FromWarehouse eq '99'",
                 '$expand'=>"TransferLines"
 
             ]);

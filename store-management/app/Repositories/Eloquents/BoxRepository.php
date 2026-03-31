@@ -113,7 +113,7 @@ public function getBoxesCountByLocation(string $locationCode): int
 {
     return $this->model
         ->whereHas('transfer', function ($q) use ($locationCode) {
-            $q->where('to_warehouse', $locationCode);
+            $q->where('from_warehouse', $locationCode);
         })
         ->count();
 }
