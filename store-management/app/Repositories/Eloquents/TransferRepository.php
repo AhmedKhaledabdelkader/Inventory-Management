@@ -394,6 +394,37 @@ public function getQualityControlSummary(string $locationCode): array
 }
 
 
+public function getWarehousesSummary(): array
+{
+    $fromWarehouses = $this->model
+        ->selectRaw('from_warehouse as warehouse_code, COUNT(*) as from_count')
+        ->whereNotNull('from_warehouse')
+        ->groupBy('from_warehouse')
+        ->get()
+        ->keyBy('warehouse_code');
+
+    $toWarehouses = $this->model
+        ->selectRaw('to_warehouse as warehouse_code, COUNT(*) as to_count')
+        ->whereNotNull('to_warehouse')
+        ->groupBy('to_warehouse')
+        ->get()
+        ->keyBy('warehouse_code');
+
+    $allCodes = $fromWarehouses->keys()
+        ->merge($toWarehouses->keys())
+        ->unique()
+        ->values();
+
+    return $allCodes->map(function ($code) use ($fromWarehouses, $toWarehouses) {
+        return [
+            'warehouse_code' => $code,
+            'from_count' => (int) ($fromWarehouses[$code]->from_count ?? 0),
+            'to_count' => (int) ($toWarehouses[$code]->to_count ?? 0),
+        ];
+    })->toArray();
+}
+
+
 
 
 }

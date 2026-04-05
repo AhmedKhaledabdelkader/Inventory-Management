@@ -42,3 +42,6 @@ Route::get('/erp/status', [TransferController::class, 'erpStatus'])->middleware(
 
 
 Route::get('/qc/dashboard', [TransferController::class, 'qcDashboard'])->middleware(['auth.user','role:Quality Control']);
+
+
+Route::get('/warehouses/summary', [TransferController::class, 'warehousesSummary']);

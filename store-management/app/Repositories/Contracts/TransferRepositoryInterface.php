@@ -65,5 +65,7 @@ public function getErpSyncStatus(): array;
 
 public function getQualityControlSummary(string $locationCode): array;
 
+public function getWarehousesSummary(): array;
+
     
 }

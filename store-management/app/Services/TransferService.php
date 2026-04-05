@@ -261,6 +261,11 @@ public function getQcDashboardSummary(string $locationCode): array
     return $this->transferRepository->getQualityControlSummary($locationCode);
 }
 
+public function getWarehousesSummary(): array
+{
+    return $this->transferRepository->getWarehousesSummary();
+}
+
 
 
 }

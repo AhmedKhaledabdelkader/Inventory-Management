@@ -283,4 +283,16 @@ public function qcDashboard(Request $request)
     ]);
 }
 
+
+public function warehousesSummary()
+{
+    $warehouses = $this->transferService->getWarehousesSummary();
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Warehouses retrieved successfully',
+        'result' => $warehouses,
+    ]);
+}
+
 }
