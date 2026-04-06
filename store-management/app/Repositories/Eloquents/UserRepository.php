@@ -128,4 +128,12 @@ public function updatePassword($user, string $hashedPassword)
 }
 
 
+public function getAllRunners()
+{
+    return $this->model->whereHas('roles', function ($q) {
+        $q->where('name', 'runner');
+    })->get();
+
+}
+
 }

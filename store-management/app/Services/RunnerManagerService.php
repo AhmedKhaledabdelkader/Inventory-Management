@@ -2,12 +2,13 @@
 
 namespace App\Services;
 
+use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Eloquents\LotRepository;
 use Exception;
 
 class RunnerManagerService
 {
-    public function __construct(protected LotRepository $lotRepository) {
+    public function __construct(protected LotRepository $lotRepository,protected UserRepositoryInterface $userRepository) {
       
     }
 
@@ -58,6 +59,16 @@ public function getAllLotsWithRunners(?string $search){
     return $lots ;
 
 
+}
+
+
+public function getAllRunners() {
+
+
+    $runners=$this->userRepository->getAllRunners() ;
+
+    return $runners ;
+    
 }
 
 

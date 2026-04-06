@@ -13,3 +13,5 @@ Route::post('/lots/assign/{id}', [RunnerManagerController::class, 'assign'])->mi
 'role:Runner Manager','validate.runner.id']);
 
 Route::get('/runners', [RunnerManagerController::class, 'indexAllRunnersWithAssignedLots'])->middleware(['auth.user','role:Runner Manager']);
+
+Route::get('/runners/all', [RunnerManagerController::class, 'indexAllRunners'])->middleware(['auth.user']);

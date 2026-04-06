@@ -19,6 +19,8 @@ interface UserRepositoryInterface
 
     public function getAllUsers() ;
 
+    public function getAllRunners() ;
+
     public function getUserStatistics() ;
     
     public function search(array $data) ;

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\apis;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\IdNameRunnerResource;
 use App\Http\Resources\LotResource;
 use App\Http\Resources\RunnerResource;
 use App\Services\RunnerManagerService;
@@ -73,8 +74,17 @@ public function indexAllRunnersWithAssignedLots()
 }
 
 
+public function indexAllRunners()
+{
+    $runners = $this->runnerManagerService->getAllRunners();
 
+    return response()->json([
+        'status' => 'success',
+        'message'=>'retrieving all runners successfully',
+        'result' =>IdNameRunnerResource::collection($runners),
+    ]);
 
+}
 
 
 
